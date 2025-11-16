@@ -1,14 +1,22 @@
 import { test, expect } from '@playwright/test';
+import * as master from './master.js';
 
 test('create user and login', async ({page}) => {
-    // reach homepage
-    await page.goto('https://www.automationexercise.com/')
+    test.setTimeout(150000); // 150 seconds (2.5 minutes)
+
+    let current_count = 1
+    let max_count = 2
+
+    while (current_count <= max_count){
+
+        // reach homepage
+    await page.goto(`${master.base_url}`)
     await expect(page).toHaveTitle("Automation Exercise")
     //opening login/signup page then fill initial registration value
     await page.locator('xpath=//*[@id="header"]/div/div/div/div[2]/div/ul/li[4]/a').click()
     await expect(page.getByText("Login to your account")).toBeVisible()
-    await page.locator('xpath=//*[@id="form"]/div/div/div[3]/div/form/input[2]').fill("Testisxx1")
-    await page.locator('xpath=//*[@id="form"]/div/div/div[3]/div/form/input[3]').fill("testisxx0x2@gmail.com")
+    await page.locator('xpath=//*[@id="form"]/div/div/div[3]/div/form/input[2]').fill(`${master.name}${current_count}`)
+    await page.locator('xpath=//*[@id="form"]/div/div/div[3]/div/form/input[3]').fill(`${master.email}${current_count}@gmail.com`)
     await page.locator('xpath=//*[@id="form"]/div/div/div[3]/div/form/button').click()
     await expect(page.getByText("Enter Account Information")).toBeVisible()
 
@@ -36,6 +44,8 @@ test('create user and login', async ({page}) => {
 
     //delete account
     await page.locator('xpath=//*[@id="header"]/div/div/div/div[2]/div/ul/li[5]/a').click()
-    await page.pause()
+    console.log(`Finished the testing with acount ${master.email}${current_count}@gmail.com`)
+    current_count += 1
+    }
 }
 )
