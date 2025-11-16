@@ -1,17 +1,18 @@
 import { test, expect } from '@playwright/test';
-import * as master from './master.js';
+import * as master from './master_variables.js';
+import * as steps from './master_steps.js';
 
 test('create user and login', async ({page}) => {
     test.setTimeout(150000); // 150 seconds (2.5 minutes)
 
     let current_count = 1
-    let max_count = 2
+    let max_count = 1
 
     while (current_count <= max_count){
 
         // reach homepage
-    await page.goto(`${master.base_url}`)
-    await expect(page).toHaveTitle("Automation Exercise")
+    await steps.openPage(page)
+    
     //opening login/signup page then fill initial registration value
     await page.locator('xpath=//*[@id="header"]/div/div/div/div[2]/div/ul/li[4]/a').click()
     await expect(page.getByText("Login to your account")).toBeVisible()
